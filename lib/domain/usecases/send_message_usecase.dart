@@ -6,7 +6,7 @@ class SendMessageUsecase {
       id: chatId,
       message: message,
       modifiedAt: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      sender: 'Bot',
+      sender: 'user',
     );
 
     return responseMessage;

@@ -35,7 +35,6 @@ void main() {
     final messages = [Message(id: '12345', sender: "user1", message: "hello", modifiedAt: 1627070000)];
 
     when(() => mockDialogBloc.stream).thenAnswer((_) => Stream.fromIterable([DialogLoaded(messages: messages)]));
-
     when(() => mockDialogBloc.state).thenReturn(DialogLoaded(messages: messages));
 
     await tester.pumpWidget(
@@ -45,7 +44,8 @@ void main() {
       ),
     );
 
-    expect(find.byType(ListTile), findsOneWidget);
+    expect(find.byType(Container), findsWidgets);
+    expect(find.text('hello'), findsOneWidget);
   });
 
   testWidgets('Testing DialogScreen with DialogError state', (WidgetTester tester) async {

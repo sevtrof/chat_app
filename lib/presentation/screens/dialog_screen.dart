@@ -54,21 +54,49 @@ class DialogScreenState extends State<DialogScreen> {
                     itemCount: state.messages.length,
                     itemBuilder: (context, index) {
                       final message = state.messages[index];
-                      final modifiedTime = DateTime.fromMillisecondsSinceEpoch(
-                          message.modifiedAt * 1000);
+                      final time = DateTime.fromMillisecondsSinceEpoch(
+                              message.modifiedAt * 1000)
+                          .toLocal()
+                          .toString()
+                          .substring(0, 17);
 
-                      return ListTile(
-                        title: Text(message.sender),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(message.message),
-                            Text(
-                              'Modified At: $modifiedTime',
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.grey),
+                      bool isCurrentUser = message.sender == 'user';
+
+                      return Align(
+                        alignment: isCurrentUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7,
+                          ),
+                          child: Container(
+                            margin: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: isCurrentUser
+                                  ? Colors.blue[200]
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          ],
+                            child: Column(
+                              crossAxisAlignment: isCurrentUser
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
+                              children: [
+                                isCurrentUser
+                                    ? Container()
+                                    : Text(message.sender,
+                                        style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold)),
+                                Text(message.message),
+                                Text(time,
+                                    style: const TextStyle(
+                                        fontSize: 10, color: Colors.grey)),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },

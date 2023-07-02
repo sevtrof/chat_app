@@ -56,7 +56,7 @@ void main() {
       ),
     );
 
-    expect(find.byType(Card), findsOneWidget);
+    expect(find.byType(InkWell), findsOneWidget);
   });
 
   testWidgets('Testing ChatScreen with ChatError state',
@@ -64,7 +64,8 @@ void main() {
     when(() => mockChatBloc.stream).thenAnswer(
         (_) => Stream.fromIterable([ChatError(message: "An error occurred")]));
 
-    when(() => mockChatBloc.state).thenReturn(ChatError(message: "An error occurred"));
+    when(() => mockChatBloc.state)
+        .thenReturn(ChatError(message: "An error occurred"));
 
     await tester.pumpWidget(
       BlocProvider<ChatBloc>.value(
