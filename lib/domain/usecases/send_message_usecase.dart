@@ -1,12 +1,12 @@
 import 'package:chat_app/domain/entities/message.dart';
 
 class SendMessageUsecase {
-  Future<Message> execute(String chatId, String message) async {
+  Future<Message> execute(String chatId, String message, String sender) async {
     final responseMessage = Message(
       id: chatId,
       message: message,
       modifiedAt: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      sender: 'user',
+      sender: sender,
     );
 
     return responseMessage;

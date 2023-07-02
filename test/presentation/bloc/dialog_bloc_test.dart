@@ -89,8 +89,11 @@ void main() {
   test(
       'emits [DialogLoading, DialogError] when SendMessage throws an exception',
       () async {
-    when(() => sendMessageUsecase.execute(any(), any()))
-        .thenThrow(Exception('Failed to send message'));
+    when(() => sendMessageUsecase.execute(
+          any(),
+          any(),
+          any(),
+        )).thenThrow(Exception('Failed to send message'));
 
     final bloc = DialogBloc(
       getMessagesUsecase: getMessagesUsecase,

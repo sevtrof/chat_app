@@ -40,16 +40,24 @@ class DialogBloc extends Bloc<DialogEvent, DialogState> {
     Emitter<DialogState> emit,
   ) async {
     try {
-      final sentMessage =
-          await sendMessageUsecase.execute(event.chatId, event.message);
-
-      // This simulates a message sending delay.
-      await Future.delayed(const Duration(seconds: 1));
+      final sentMessage = await sendMessageUsecase.execute(
+          event.chatId, event.message, 'user');
 
       final currentState = state as DialogLoaded;
       final List<Message> updatedMessages = List.from(currentState.messages)
         ..add(sentMessage);
+
       emit(DialogLoaded(messages: updatedMessages));
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      final mockAnswer = await sendMessageUsecase.execute(
+          event.chatId, 'Mock message answer', 'Bot');
+
+      final List<Message> updatedMessagesWithAnswer = List.from(updatedMessages)
+        ..add(mockAnswer);
+
+      emit(DialogLoaded(messages: updatedMessagesWithAnswer));
     } catch (e) {
       emit(DialogError(message: e.toString()));
     }
